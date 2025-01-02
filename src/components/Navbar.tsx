@@ -23,6 +23,16 @@ const navigationItems = [
     href: "/basicTransactions",
     color: "text-red-400 hover:text-red-300",
   },
+  {
+    title: "Asset Transaction",
+    href: "/assetsTransaction",
+    color: "text-yellow-400 hover:text-yellow-300",
+  },  {
+    title: "Multi Signed Transaction",
+    href: "/multiSignTransactions",
+    color: "text-yellow-400 hover:text-yellow-300",
+  },
+  
 ];
 
 export const Navbar = () => {
