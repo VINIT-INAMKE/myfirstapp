@@ -4,8 +4,8 @@ import Head from "next/head";
 import { CardanoWallet, MeshBadge } from "@meshsdk/react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import MyWalletComponent from "@/components/MyWalletComponent";
-import MyWalletAssetComponent from "@/components/MyWalletAssetComponent";
+
+
 
 
 
@@ -32,12 +32,8 @@ export default function Home() {
           </Button>
         </div>
         <CardanoWallet isDark={false} />
-        <div className="demo">
-          <MyWalletComponent />
-        </div>
-        <div className="demo">
-          <MyWalletAssetComponent />
-        </div>
+       
+   
         <div className="demo">
           {/* <CardanoWallet
             burnerWallet={{

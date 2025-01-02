@@ -8,10 +8,9 @@ import {
   useNetwork,
 } from "@meshsdk/react";
 import { useState } from "react";
-import { BlockfrostProvider, type UTxO } from "@meshsdk/core";
 import { Button } from "@/components/ui/button";
-
-const blockfrostApiKey = "previewe0zgCEC3lNGhzitEoAdbmCg1bgWJ0Bio";
+import { BrowserWallet, type UTxO } from '@meshsdk/core';
+// const blockfrostApiKey = "previewe0zgCEC3lNGhzitEoAdbmCg1bgWJ0Bio";
 
 export default function WalletHooksExamples() {
   const wallet = useWallet();
@@ -20,22 +19,30 @@ export default function WalletHooksExamples() {
   const address = useAddress();
   const lovelace = useLovelace();
   const network = useNetwork();
-  
+
   const [utxos, setUtxos] = useState<UTxO[]>([]);
   const [isLoadingUtxos, setIsLoadingUtxos] = useState(false);
   const [error, setError] = useState<string>("");
 
   const fetchUTXOs = async () => {
-    if (!address || !blockfrostApiKey) return;
-    
-    setIsLoadingUtxos(true);
-    setError("");
-    
     try {
-      const blockfrostProvider = new BlockfrostProvider(blockfrostApiKey);
-      const utxoList = await blockfrostProvider.fetchAddressUTxOs(address);
-      setUtxos(utxoList);
-      console.log(utxoList);
+      setIsLoadingUtxos(true);
+      setError("");
+      
+      if (!wallet.connected) {
+        setError("Please connect your wallet first");
+        return;
+      }
+
+      console.log("Fetching UTXOs from wallet...");
+      if (!wallet.name) {
+        setError("Wallet name not found");
+        return;
+      }
+      const browserWallet = await BrowserWallet.enable(wallet.name);
+      const walletUtxos = await browserWallet.getUtxos();
+      console.log("Received UTXOs:", walletUtxos);
+      setUtxos(walletUtxos);
     } catch (err) {
       console.error("Failed to fetch UTXOs:", err);
       setError("Failed to fetch UTXOs. Please try again.");
