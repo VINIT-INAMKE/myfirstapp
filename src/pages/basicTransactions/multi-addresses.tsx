@@ -67,7 +67,7 @@ export default function MultiAddresses() {
       
       console.log("Transaction submitted:", txHash);
       setSuccess(true);
-      // Reset form
+    
       setRecipients([
         { address: "", amount: "" },
         { address: "", amount: "" },

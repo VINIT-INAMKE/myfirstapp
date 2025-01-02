@@ -1,85 +1,108 @@
 "use client";
 
 import Head from "next/head";
-import { CardanoWallet, MeshBadge } from "@meshsdk/react";
-import { Button } from "@/components/ui/button";
+import { CardanoWallet } from "@meshsdk/react";
 import Link from "next/link";
-
-
-
-
+import { motion } from "framer-motion";
+import { VideoPlayer } from "@/components/VideoPlayer";
 
 export default function Home() {
   return (
-    <div className="bg-gray-900 w-full text-white text-center pt-16">
+    <>
       <Head>
-        <title>Mesh App on Cardano</title>
-        <meta name="description" content="A Cardano dApp powered by Mesh" />
+        <title>Cardano Wallet Explorer</title>
+        <meta name="description" content="Explore and manage your Cardano wallet with ease" />
       </Head>
-      <main
-        className={`flex min-h-screen flex-col items-center justify-center p-24`}
-      >
-        <h1 className="text-6xl font-thin mb-20">
-          <a href="https://meshjs.dev/" className="text-sky-600">
-            Mesh
-          </a>{" "}
-          Next.js
-        </h1>
 
-        <div className="mb-20">
-          <Button>
-            <Link href="./wallets">Wallet Page Custom Hooks</Link>
-          </Button>
-        </div>
-        <CardanoWallet isDark={false} />
-       
-   
-        <div className="demo">
-          {/* <CardanoWallet
-            burnerWallet={{
-              networkId: 0,
-              provider: blockchainProvider,
-            }}
-          /> */}
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 content-center justify-around ">
-          <a
-            href="https://meshjs.dev/apis"
-            className="bg-gray-800 rounded-xl border border-white hover:scale-105 transition max-w-96 p-5 m-5"
-          >
-            <h2 className="text-2xl font-bold mb-2">Documentation</h2>
-            <p className="text-gray-400">
-              Our documentation provide live demos and code samples; great
-              educational tool for learning how Cardano works.
-            </p>
-          </a>
+      {/* Gradient Background */}
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+        {/* Animated Gradient Blob */}
+        <div className="absolute inset-0 bg-gradient-to-r from-pink-500/30 to-purple-500/30 blur-3xl animate-blob" />
+        <div className="absolute inset-0 bg-gradient-to-l from-blue-500/30 to-cyan-500/30 blur-3xl animate-blob animation-delay-2000" />
+        
+        <div className="relative">
+          <main className="container mx-auto px-6 py-20">
+            {/* Hero Section */}
+            <div className="flex flex-col items-center justify-center text-center space-y-12 pt-20">
+              <div className="flex flex-col md:flex-row items-center justify-center gap-8">
+                {/* Video Player */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 1.2, ease: "easeOut" }}
+                  className="w-[320px] h-[400px] relative"
+                >
+                  <VideoPlayer
+                    src="/hero.webm"
+                    className="w-full h-full object-contain"
+                  />
+                </motion.div>
 
-          <a
-            href="https://meshjs.dev/guides"
-            className="bg-gray-800 rounded-xl border border-white hover:scale-105 transition max-w-96  p-5 m-5"
-          >
-            <h2 className="text-2xl font-bold mb-2">Guides</h2>
-            <p className="text-gray-400">
-              Whether you are launching a new NFT project or ecommerce store,
-              these guides will help you get started.
-            </p>
-          </a>
+                {/* Text Content */}
+                <div className="flex flex-col items-center space-y-6">
+                  <motion.h1 
+                    className="text-6xl md:text-7xl font-bold text-white"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1.2, ease: "easeOut" }}
+                  >
+                    Cardano Wallet
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400"> Explorer</span>
+                  </motion.h1>
 
-          <a
-            href="https://meshjs.dev/smart-contracts"
-            className="bg-gray-800 rounded-xl border border-white hover:scale-105 transition max-w-96 p-5 m-5 md:mx-auto lg:mx-5 md:col-span-2 lg:col-span-1 "
-          >
-            <h2 className="text-2xl font-bold mb-2">Smart Contracts</h2>
-            <p className="text-gray-400">
-              Open-source smart contracts, complete with documentation, live
-              demos, and end-to-end source code.
-            </p>
-          </a>
+                  <motion.p 
+                    className="text-xl text-gray-300 max-w-2xl"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
+                  >
+                    Connect your wallet to explore transactions, manage assets, and interact with the Cardano blockchain.
+                  </motion.p>
+                </div>
+              </div>
+
+              {/* Wallet Connection */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1.2, delay: 0.6, ease: "easeOut" }}
+                className="w-full max-w-md"
+              >
+                <CardanoWallet />
+              </motion.div>
+
+              {/* Feature Grid */}
+              <motion.div 
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1.2, delay: 0.9, ease: "easeOut" }}
+              >
+                <Link href="/walletinfo" className="group">
+                  <div className="p-8 rounded-2xl bg-white/10 backdrop-blur-lg hover:bg-white/20 transition-all duration-300">
+                    <h3 className="text-xl font-bold text-white mb-4">Wallet Info</h3>
+                    <p className="text-gray-300">View detailed information about your wallet, including balance and assets.</p>
+                  </div>
+                </Link>
+
+                <Link href="/basicTransactions" className="group">
+                  <div className="p-8 rounded-2xl bg-white/10 backdrop-blur-lg hover:bg-white/20 transition-all duration-300">
+                    <h3 className="text-xl font-bold text-white mb-4">Transactions</h3>
+                    <p className="text-gray-300">Send and receive ADA with an intuitive transaction interface.</p>
+                  </div>
+                </Link>
+
+                <Link href="/utilityProviders" className="group">
+                  <div className="p-8 rounded-2xl bg-white/10 backdrop-blur-lg hover:bg-white/20 transition-all duration-300">
+                    <h3 className="text-xl font-bold text-white mb-4">Cardano Providers</h3>
+                    <p className="text-gray-300">Access to various utility Providers from various Mesh Providers</p>
+                  </div>
+                </Link>
+              </motion.div>
+            </div>
+          </main>
         </div>
-      </main>
-      <footer className="p-8 border-t border-gray-300 flex justify-center">
-        <MeshBadge isDark={true} />
-      </footer>
-    </div>
+      </div>
+    </>
   );
 }

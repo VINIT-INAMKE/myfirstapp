@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import animate from "tailwindcss-animate";
 
 export default {
     darkMode: ["class"],
@@ -55,8 +56,27 @@ export default {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
-  		}
+  		},
+  		animation: {
+  			blob: "blob 12s ease-in-out infinite",
+  		},
+  		keyframes: {
+  			blob: {
+  				"0%": {
+  					transform: "translate(0px, 0px) scale(1)",
+  				},
+  				"33%": {
+  					transform: "translate(30px, -50px) scale(1.2)",
+  				},
+  				"66%": {
+  					transform: "translate(-20px, 20px) scale(0.8)",
+  				},
+  				"100%": {
+  					transform: "translate(0px, 0px) scale(1)",
+  				},
+  			},
+  		},
   	}
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [animate],
 } satisfies Config;
