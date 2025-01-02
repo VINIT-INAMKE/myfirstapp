@@ -1,11 +1,9 @@
-import { CardanoWallet, useLovelace, useWallet } from "@meshsdk/react";
+import { CardanoWallet, useWallet } from "@meshsdk/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 
 export const Navbar = () => {
-  const { connected, } =
-    useWallet();
+  const { connected } = useWallet();
 
   return (
     <nav className="flex items-center  justify-between h-full w-full bg-inherit">
