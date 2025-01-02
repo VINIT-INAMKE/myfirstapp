@@ -6,15 +6,15 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import MyWalletComponent from "@/components/MyWalletComponent";
 import MyWalletAssetComponent from "@/components/MyWalletAssetComponent";
-import { ConnectWalletButton } from "@/components/ConnectWallet";
+
 
 
 export default function Home() {
   return (
-    <div className="bg-gray-900 w-full text-white text-center">
+    <div className="bg-gray-900 w-full text-white text-center pt-16">
       <Head>
         <title>Mesh App on Cardano</title>
-        <meta name="description" content="A Cardano dApp powered my Mesh" />
+        <meta name="description" content="A Cardano dApp powered by Mesh" />
       </Head>
       <main
         className={`flex min-h-screen flex-col items-center justify-center p-24`}

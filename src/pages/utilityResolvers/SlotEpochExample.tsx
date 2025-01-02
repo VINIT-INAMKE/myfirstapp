@@ -8,8 +8,8 @@ export default function SlotEpochExample() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setSlot(resolveSlotNo("preprod"));
-      setEpoch(resolveEpochNo("preprod"));
+      setSlot(resolveSlotNo("preview"));
+      setEpoch(resolveEpochNo("preview"));
     }, 1000);
     return () => clearInterval(interval);
   }, []);
@@ -40,7 +40,7 @@ export default function SlotEpochExample() {
             <div className="p-4 rounded-lg bg-black/30">
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm font-medium text-teal-200">Current Epoch</span>
-                <span className="text-xs text-teal-300">Preprod network</span>
+                <span className="text-xs text-teal-300">Preview network</span>
               </div>
               <p className="font-mono text-2xl">{epoch}</p>
             </div>

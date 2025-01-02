@@ -1,27 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-
 import { BlockfrostProvider } from "@meshsdk/core";
+import { useAddress } from "@meshsdk/react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { useState } from "react";
 
 const blockfrostApiKey = "previewe0zgCEC3lNGhzitEoAdbmCg1bgWJ0Bio";
 
 export default function BlockfrostExample() {
-  const [address, setAddress] = useState<string>("");
+  const address = useAddress();
   const blockfrostProvider = new BlockfrostProvider(blockfrostApiKey);
 
   const { data, isLoading, isFetched, refetch } = useQuery({
     queryKey: ["blockfrostExampleQuery", address],
-    queryFn: () => blockfrostProvider.fetchAddressUTxOs(address),
+    queryFn: () => address ? blockfrostProvider.fetchAddressUTxOs(address) : null,
     enabled: false,
   });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (address) refetch();
-  };
 
   return (
     <div className="relative">
@@ -48,47 +42,35 @@ export default function BlockfrostExample() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <label htmlFor="address" className="text-sm font-medium text-purple-200">
-                Cardano Address
-              </label>
-              <input
-                id="address"
-                placeholder="Enter Cardano address..."
-                value={address}
-                onChange={(e) => {
-                  console.log('Input change:', e.target.value);
-                  setAddress(e.target.value);
-                }}
-                className="w-full px-3 py-2 rounded-md bg-white/10 border border-white/20 text-white placeholder:text-white/50"
-                type="text"
-              />
+          <div className="space-y-4">
+            <div className="p-4 rounded-lg bg-white/10">
+              <p className="text-sm font-medium text-purple-200">Connected Address:</p>
+              <p className="font-mono text-sm break-all">{address || "Not connected"}</p>
             </div>
 
             <Button 
-              type="submit" 
+              onClick={() => refetch()}
               disabled={!address || blockfrostApiKey.length === 0 || isLoading}
-              className="w-full bg-purple-500 hover:bg-purple-600 text-white"
+              className="w-full bg-purple-500 hover:bg-purple-600 text-white disabled:opacity-50"
             >
-              {isLoading ? "Querying..." : "Query Address"}
+              {isLoading ? "Querying..." : "Query Connected Address"}
             </Button>
-          </form>
 
-          {isLoading && (
-            <div className="mt-6 p-4 rounded-lg bg-white/5 animate-pulse">
-              Loading...
-            </div>
-          )}
+            {isLoading && (
+              <div className="mt-6 p-4 rounded-lg bg-white/5 animate-pulse">
+                Loading...
+              </div>
+            )}
 
-          {isFetched && data && (
-            <div className="mt-6">
-              <h3 className="text-sm font-medium mb-2 text-purple-200">Query Results:</h3>
-              <pre className="p-4 rounded-lg bg-black/30 overflow-auto max-h-[400px] text-sm">
-                {JSON.stringify(data, null, 2)}
-              </pre>
-            </div>
-          )}
+            {isFetched && data && (
+              <div className="mt-6">
+                <h3 className="text-sm font-medium mb-2 text-purple-200">Query Results:</h3>
+                <pre className="p-4 rounded-lg bg-black/30 overflow-auto max-h-[400px] text-sm">
+                  {JSON.stringify(data, null, 2)}
+                </pre>
+              </div>
+            )}
+          </div>
         </CardContent>
       </Card>
     </div>
