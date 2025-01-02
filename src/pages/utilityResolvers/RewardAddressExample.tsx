@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function RewardAddressExample() {
-  const { wallet, connected } = useWallet();
+  const {  connected } = useWallet();
   const address = useAddress();
   const [rewardAddress, setRewardAddress] = useState<string>("");
 
