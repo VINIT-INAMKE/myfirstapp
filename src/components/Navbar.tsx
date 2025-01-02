@@ -18,6 +18,11 @@ const navigationItems = [
     href: "/walletinfo",
     color: "text-sky-400 hover:text-sky-300",
   },
+  {
+    title: "Basic Transaction",
+    href: "/basicTransactions",
+    color: "text-red-400 hover:text-red-300",
+  },
 ];
 
 export const Navbar = () => {
