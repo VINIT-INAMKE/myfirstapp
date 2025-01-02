@@ -4,6 +4,11 @@ import Link from "next/link";
 
 const navigationItems = [
   {
+    title: "Wallet Info",
+    href: "/walletinfo",
+    color: "text-sky-400 hover:text-sky-300",
+  },
+  {
     title: "Utility Providers",
     href: "/utilityProviders",
     color: "text-purple-400 hover:text-purple-300",
@@ -14,9 +19,9 @@ const navigationItems = [
     color: "text-emerald-400 hover:text-emerald-300",
   },
   {
-    title: "Wallet Info",
-    href: "/walletinfo",
-    color: "text-sky-400 hover:text-sky-300",
+    title: "Smart Contract for Assets",
+    href: "/smartContract",
+    color: "text-purple-400 hover:text-purple-300",
   },
   {
     title: "Basic Transaction",
@@ -27,11 +32,13 @@ const navigationItems = [
     title: "Asset Transaction",
     href: "/assetsTransaction",
     color: "text-yellow-400 hover:text-yellow-300",
-  },  {
-    title: "Multi Signed Transaction",
-    href: "/multiSignTransactions",
-    color: "text-yellow-400 hover:text-yellow-300",
+  },  
+  {
+    title: "Minting",
+    href: "/minting",
+    color: "text-purple-400 hover:text-purple-300",
   },
+  
   
 ];
 

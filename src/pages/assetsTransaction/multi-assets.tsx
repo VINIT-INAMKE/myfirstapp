@@ -5,10 +5,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-interface AssetTransfer {
-  recipientAddress: string;
+interface Asset {
   assetUnit: string;
   quantity: string;
+}
+
+interface AssetTransfer {
+  recipientAddress: string;
+  assets: Asset[];
   lovelaceAmount: string;
 }
 
@@ -19,16 +23,42 @@ export default function MultiAssets() {
   const [error, setError] = useState<string>("");
   const [formData, setFormData] = useState<AssetTransfer>({
     recipientAddress: "",
-    assetUnit: "",
-    quantity: "1",
+    assets: [{ assetUnit: "", quantity: "1" }],
     lovelaceAmount: "1000000",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    if (name === "recipientAddress" || name === "lovelaceAmount") {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
     setError("");
     setSuccess(false);
+  };
+
+  const handleAssetChange = (index: number, field: keyof Asset, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      assets: prev.assets.map((asset, i) =>
+        i === index ? { ...asset, [field]: value } : asset
+      ),
+    }));
+    setError("");
+    setSuccess(false);
+  };
+
+  const addAssetField = () => {
+    setFormData(prev => ({
+      ...prev,
+      assets: [...prev.assets, { assetUnit: "", quantity: "1" }],
+    }));
+  };
+
+  const removeAssetField = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      assets: prev.assets.filter((_, i) => i !== index),
+    }));
   };
 
   async function handleTransfer(e: React.FormEvent) {
@@ -38,8 +68,13 @@ export default function MultiAssets() {
       return;
     }
 
-    if (!formData.recipientAddress || !formData.assetUnit || !formData.quantity || !formData.lovelaceAmount) {
-      setError("Please fill in all fields");
+    if (!formData.recipientAddress || !formData.lovelaceAmount) {
+      setError("Please fill in all required fields");
+      return;
+    }
+
+    if (formData.assets.some(asset => !asset.assetUnit)) {
+      setError("Please fill in all asset units");
       return;
     }
 
@@ -54,10 +89,10 @@ export default function MultiAssets() {
         )
         .sendAssets(
           formData.recipientAddress,
-          [{
-            unit: formData.assetUnit,
-            quantity: formData.quantity,
-          }]
+          formData.assets.map(asset => ({
+            unit: asset.assetUnit,
+            quantity: asset.quantity,
+          }))
         );
 
       const unsignedTx = await tx.build();
@@ -69,8 +104,7 @@ export default function MultiAssets() {
       // Reset form
       setFormData({
         recipientAddress: "",
-        assetUnit: "",
-        quantity: "1",
+        assets: [{ assetUnit: "", quantity: "1" }],
         lovelaceAmount: "1000000",
       });
     } catch (err) {
@@ -109,32 +143,55 @@ export default function MultiAssets() {
               />
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-purple-200">
-                Asset Unit
-              </label>
-              <Input
-                name="assetUnit"
-                placeholder="Enter asset unit..."
-                value={formData.assetUnit}
-                onChange={handleInputChange}
-                className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
-              />
-            </div>
+            {formData.assets.map((asset, index) => (
+              <div key={index} className="space-y-4 p-4 bg-white/5 rounded-lg">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-sm font-medium text-purple-200">Asset {index + 1}</h3>
+                  {formData.assets.length > 1 && (
+                    <Button
+                      type="button"
+                      onClick={() => removeAssetField(index)}
+                      className="bg-red-500 hover:bg-red-600 text-white text-sm p-2"
+                    >
+                      Remove
+                    </Button>
+                  )}
+                </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-purple-200">
-                Asset Quantity
-              </label>
-              <Input
-                type="number"
-                name="quantity"
-                value={formData.quantity}
-                onChange={handleInputChange}
-                min="1"
-                className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
-              />
-            </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-purple-200">
+                    Asset Unit
+                  </label>
+                  <Input
+                    value={asset.assetUnit}
+                    onChange={(e) => handleAssetChange(index, "assetUnit", e.target.value)}
+                    className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                    placeholder="Enter asset unit..."
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-purple-200">
+                    Quantity
+                  </label>
+                  <Input
+                    type="number"
+                    value={asset.quantity}
+                    onChange={(e) => handleAssetChange(index, "quantity", e.target.value)}
+                    min="1"
+                    className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                  />
+                </div>
+              </div>
+            ))}
+
+            <Button
+              type="button"
+              onClick={addAssetField}
+              className="w-full bg-purple-700 hover:bg-purple-800 text-white mb-4"
+            >
+              Add Another Asset
+            </Button>
 
             <div className="space-y-2">
               <label className="text-sm font-medium text-purple-200">
