@@ -1,5 +1,13 @@
+"use client";
+
 import Head from "next/head";
 import { CardanoWallet, MeshBadge } from "@meshsdk/react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import MyWalletComponent from "@/components/MyWalletComponent";
+import MyWalletAssetComponent from "@/components/MyWalletAssetComponent";
+import { ConnectWalletButton } from "@/components/ConnectWallet";
+
 
 export default function Home() {
   return (
@@ -19,9 +27,25 @@ export default function Home() {
         </h1>
 
         <div className="mb-20">
-          <CardanoWallet />
+          <Button>
+            <Link href="./wallets">Wallet Page Custom Hooks</Link>
+          </Button>
         </div>
-
+        <CardanoWallet isDark={false} />
+        <div className="demo">
+          <MyWalletComponent />
+        </div>
+        <div className="demo">
+          <MyWalletAssetComponent />
+        </div>
+        <div className="demo">
+          {/* <CardanoWallet
+            burnerWallet={{
+              networkId: 0,
+              provider: blockchainProvider,
+            }}
+          /> */}
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 content-center justify-around ">
           <a
             href="https://meshjs.dev/apis"
