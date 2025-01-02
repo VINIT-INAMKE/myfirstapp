@@ -20,24 +20,22 @@ export default function WalletHooksExamples() {
   const address = useAddress();
   const lovelace = useLovelace();
   const network = useNetwork();
-
+  
   const [utxos, setUtxos] = useState<UTxO[]>([]);
   const [isLoadingUtxos, setIsLoadingUtxos] = useState(false);
   const [error, setError] = useState<string>("");
 
   const fetchUTXOs = async () => {
     if (!address || !blockfrostApiKey) return;
-
+    
     setIsLoadingUtxos(true);
     setError("");
-
+    
     try {
       const blockfrostProvider = new BlockfrostProvider(blockfrostApiKey);
-      const utxoList = await blockfrostProvider.fetchAddressUTxOs(
-        address,
-        "desc"
-      );
+      const utxoList = await blockfrostProvider.fetchAddressUTxOs(address);
       setUtxos(utxoList);
+      console.log(utxoList);
     } catch (err) {
       console.error("Failed to fetch UTXOs:", err);
       setError("Failed to fetch UTXOs. Please try again.");
@@ -144,31 +142,22 @@ export default function WalletHooksExamples() {
           {utxos.length > 0 ? (
             <div className="space-y-3">
               {utxos.map((utxo, index) => (
-                <div
-                  key={index}
-                  className="bg-gray-700 p-3 rounded-lg space-y-2"
-                >
+                <div key={index} className="bg-gray-700 p-3 rounded-lg space-y-2">
                   <div className="flex justify-between items-start">
                     <span className="font-mono text-sm text-gray-300">
-                      TxHash:{" "}
-                      {`${utxo.input.txHash.slice(
-                        0,
-                        8
-                      )}...${utxo.input.txHash.slice(-8)}`}
+                      TxHash: {`${utxo.input.txHash.slice(0, 8)}...${utxo.input.txHash.slice(-8)}`}
                     </span>
                     <span className="text-sm bg-gray-600 px-2 py-1 rounded">
                       Output #{utxo.input.outputIndex}
                     </span>
                   </div>
-
+                  
                   <div className="space-y-1">
                     {utxo.output.amount.map((amt, i) => (
                       <p key={i} className="text-sm text-gray-300">
                         <span className="font-medium">
-                          {amt.unit === "lovelace"
-                            ? `${(parseInt(amt.quantity) / 1000000).toFixed(
-                                6
-                              )} ₳`
+                          {amt.unit === "lovelace" 
+                            ? `${(parseInt(amt.quantity) / 1000000).toFixed(6)} ₳`
                             : `${amt.quantity} ${amt.unit.slice(0, 8)}...`}
                         </span>
                       </p>
@@ -179,11 +168,11 @@ export default function WalletHooksExamples() {
             </div>
           ) : (
             <p className="text-gray-400 text-center py-4">
-              {isLoadingUtxos
-                ? "Loading UTXOs..."
-                : wallet.connected
-                ? "No UTXOs found. Click refresh to load."
-                : "Connect your wallet to view UTXOs"}
+              {isLoadingUtxos 
+                ? "Loading UTXOs..." 
+                : wallet.connected 
+                  ? "No UTXOs found. Click refresh to load." 
+                  : "Connect your wallet to view UTXOs"}
             </p>
           )}
         </div>
